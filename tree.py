@@ -52,20 +52,26 @@ def iter_pre_order(root):
 
 
 def iter_post_order(root):
-    stack = [root]
-    out = []
-    while len(stack) is not 0:
-        node = stack.pop()
-        out.append(node)
+    stack = []
+    structure_index = 1
+    while True:
+        if structure_index == 1:
+            while root is not None:
+                stack.append([root, 1])
+                root = root.left
 
-        if node.left is not None:
-            stack.append(node.left)
-        if node.right is not None:
-            stack.append(node.right)
+        if len(stack) == 0:
+            break
+        structure = stack.pop()
+        if structure[1] == 1:
+            stack.append([structure[0], 2])
+            root = structure[0].right
+            structure_index = 1
+            continue
+        if structure[1] == 2:
+            structure[0].print_data()
+            structure_index = 2
 
-    while len(out) is not 0:
-        node = out.pop()
-        node.print_data()
 
 def preorder(root):
     if root is not None:

@@ -21,11 +21,57 @@ def inorder(root):
         inorder(root.right)
 
 
+def iter_inorder(root):
+    stack = []
+    while True:
+        while root is not None:
+            stack.append(root)
+            root = root.left
+
+        if len(stack) == 0:
+            break
+
+        root = stack.pop()
+        root.print_data()
+        root = root.right
+
+
+def iter_pre_order(root):
+    stack = []
+    while True:
+        while root is not None:
+            root.print_data()
+            stack.append(root)
+            root = root.left
+
+        if len(stack) == 0:
+            break
+
+        root = stack.pop()
+        root = root.right
+
+
+def iter_post_order(root):
+    stack = [root]
+    out = []
+    while len(stack) is not 0:
+        node = stack.pop()
+        out.append(node)
+
+        if node.left is not None:
+            stack.append(node.left)
+        if node.right is not None:
+            stack.append(node.right)
+
+    while len(out) is not 0:
+        node = out.pop()
+        node.print_data()
+
 def preorder(root):
     if root is not None:
         root.print_data()
-        inorder(root.left)
-        postorder(root.right)
+        preorder(root.left)
+        preorder(root.right)
 
 
 def postorder(root):
@@ -33,9 +79,6 @@ def postorder(root):
         postorder(root.left)
         postorder(root.right)
         root.print_data()
-
-
-testTreeList = ["+", "*", "E", "*", "D", None, None, "/", "C", None, None, None, None, None, None, "A", "B"]
 
 
 def make_tree(L, index, root):
@@ -53,30 +96,21 @@ def make_tree(L, index, root):
     return
 
 
-def test_preorder(L):
-    print("preorder starts!")
+def test_tree_function(sentence, func, L):
+    print(sentence)
     root = Node()
     make_tree(L, 0, root)
-    preorder(root)
+    func(root)
     print()
 
 
-def test_postorder(L):
-    print("postorder starts!")
-    root = Node()
-    make_tree(L, 0, root)
-    postorder(root)
-    print()
+testTreeList = ["+", "*", "E", "*", "D", None, None, "/", "C", "F", "G", None, None, None, None, "A", "B"]
 
+test_tree_function("preorder starts!", preorder, testTreeList)
+test_tree_function("iter preorder starts!", iter_pre_order, testTreeList)
 
-def test_inorder(L):
-    print("inorder starts!")
-    root = Node()
-    make_tree(L, 0, root)
-    inorder(root)
-    print()
+test_tree_function("inorder starts!", inorder, testTreeList)
+test_tree_function("iter inorder starts!", iter_inorder, testTreeList)
 
-
-test_preorder(testTreeList)
-test_inorder(testTreeList)
-test_postorder(testTreeList)
+test_tree_function("post order starts!", postorder, testTreeList)
+test_tree_function("iter post order starts!", iter_post_order, testTreeList)
